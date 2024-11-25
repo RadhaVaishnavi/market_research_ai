@@ -12,11 +12,15 @@ def generate_use_cases(industry_name, insights):
     prompt = (
         f"Generate structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
         f"{insights}\n\n"
-        "Each use case should follow this format:\n"
+        "Each use case should follow this format without any extra spaces:\n"
         "Use Case: [Title]\n"
         "AI Application: [Detailed description]\n"
         "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
-        "Please provide clear and concise responses without any extra spacing or formatting issues."
+        "Example:\n"
+        "Use Case: AI-Powered Predictive Maintenance\n"
+        "AI Application: Implement machine learning algorithms that analyze real-time sensor data from hospital equipment to predict potential failures and schedule maintenance proactively.\n"
+        "Cross-Functional Benefit: Operations: Minimizes unplanned downtime. Finance: Reduces maintenance costs.\n\n"
+        "Please provide clear responses without any extra spacing or formatting issues."
     )
 
     # Tokenize the prompt
@@ -25,7 +29,7 @@ def generate_use_cases(industry_name, insights):
     # Generate response
     outputs = model.generate(
         inputs["input_ids"],
-        max_length=500,  # Increased length to accommodate multiple use cases
+        max_length=500,
         num_return_sequences=1,
         no_repeat_ngram_size=2,
         do_sample=True,
@@ -38,7 +42,7 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = ' '.join(raw_text.split())  # Remove extra spaces and line breaks
+    formatted_text = ' '.join(raw_text.split())  # Clean up excessive spaces
     return formatted_text.strip()
 
 # Example usage
