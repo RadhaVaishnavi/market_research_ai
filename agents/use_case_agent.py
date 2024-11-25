@@ -1,4 +1,3 @@
-# Import required modules from transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 # Load the model and tokenizer from Hugging Face (no need for OpenAI API key)
@@ -18,9 +17,10 @@ def generate_use_cases(industry_name, insights):
     inputs = tokenizer(prompt, return_tensors="pt")
 
     # Generate the output from the model
-    outputs = model.generate(inputs["input_ids"], max_length=150, num_return_sequences=1)
+    outputs = model.generate(inputs["input_ids"], max_length=150, num_return_sequences=1, do_sample=True, top_p=0.9, top_k=50)
 
     # Decode the output tokens to text
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    return generated_text
+    return generated_text.strip()  # Strip any leading/trailing whitespace
+
