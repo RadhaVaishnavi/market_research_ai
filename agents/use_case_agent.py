@@ -6,30 +6,26 @@ model = AutoModelForCausalLM.from_pretrained("openai-community/gpt2")
 
 def generate_use_cases(industry_name, insights):
     """
-    Generate AI/GenAI use cases using a Hugging Face GPT-2 model and return structured output.
+    Generate AI/GenAI use cases using a Hugging Face GPT-2 model and enforce proper formatting.
     """
-    # Create a prompt for structured output
+    # Create a structured prompt
     prompt = (
-        f"Generate detailed and structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
+        f"Generate structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
         f"{insights}\n\n"
-        "Each use case should include:\n"
-        "1. Use Case\n"
-        "2. AI Application\n"
-        "3. Cross-Functional Benefit\n\n"
-        "Format the output as:\n"
-        "Use Case: [Brief title of the use case]\n"
-        "AI Application: [Explanation of AI application in this use case]\n"
-        "Cross-Functional Benefit: [Benefits across various teams or functions]\n\n"
-        "Provide at least one use case."
+        "Each use case should follow this format:\n"
+        "Use Case: [Title]\n"
+        "AI Application: [Detailed description]\n"
+        "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
+        "Ensure the output is clean, detailed, and avoids bullet points or line-by-line formatting issues."
     )
 
     # Tokenize the prompt
     inputs = tokenizer(prompt, return_tensors="pt")
 
-    # Generate a response
+    # Generate response
     outputs = model.generate(
         inputs["input_ids"],
-        max_length=300,  # Set appropriate length for detailed output
+        max_length=300,
         num_return_sequences=1,
         no_repeat_ngram_size=2,
         do_sample=True,
@@ -38,10 +34,18 @@ def generate_use_cases(industry_name, insights):
         temperature=0.7
     )
 
-    # Decode and clean up the generated text
-    generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    
-    # Ensure proper formatting by removing unintended line breaks
-    cleaned_text = "\n".join([line.strip() for line in generated_text.splitlines() if line.strip()])
+    # Decode and clean up the response
+    raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    return cleaned_text
+    # Post-process to ensure correct formatting
+    formatted_text = ""
+    sections = raw_text.split("Use Case:")  # Split by expected section header
+    for section in sections:
+        if section.strip():  # Process non-empty sections
+            lines = section.strip().split("\n")
+            title = f"Use Case: {lines[0].strip()}" if lines else "Use Case: N/A"
+            ai_app = "AI Application: " + next((line.strip() for line in lines if "AI Application" in line), "N/A")
+            benefits = "Cross-Functional Benefit: " + next((line.strip() for line in lines if "Cross-Functional Benefit" in line), "N/A")
+            formatted_text += f"{title}\n{ai_app}\n{benefits}\n\n"
+
+    return formatted_text.strip()
