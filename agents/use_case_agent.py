@@ -10,17 +10,13 @@ def generate_use_cases(industry_name, insights):
     """
     # Create a structured prompt
     prompt = (
-        f"Generate structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
-        f"{insights}"
-        "Each use case should follow this format without any extra spaces:"
-        "Use Case: [Title]"
-        "AI Application: [Detailed description]"
-        "Cross-Functional Benefit: [List benefits across teams/functions]"
-        "Example:"
-        "Use Case: AI-Powered Predictive Maintenance"
-        "AI Application: Implement machine learning algorithms that analyze real-time sensor data from hospital equipment to predict potential failures and schedule maintenance proactively."
-        "Cross-Functional Benefit: Operations: Minimizes unplanned downtime. Finance: Reduces maintenance costs."
-        "Please provide clear responses without any extra spacing or formatting issues."
+        f"Generate AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
+        f"{insights}\n\n"
+        "Each use case should follow this format:\n"
+        "Use Case: [Title]\n"
+        "AI Application: [Detailed description]\n"
+        "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
+        "Ensure there are no extra spaces or formatting issues."
     )
 
     # Tokenize the prompt
@@ -42,9 +38,11 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = ' '.join(raw_text.split())  # Clean up excessive spaces
-    return formatted_text.strip()
+    formatted_text = raw_text.replace("\n\n", "\n").strip()  # Clean up excessive line breaks
+    formatted_text = ' '.join(formatted_text.split())  # Remove excessive spaces
+    return formatted_text
 
-# Example usage
-use_cases = generate_use_cases("Healthcare", "AI can improve patient diagnosis and streamline administrative tasks.")
+# Example usage with clear insights
+insights = "Five trends converging for AI-enabled healthcare: Why AI and..."
+use_cases = generate_use_cases("healthcare", insights)
 print(use_cases)
