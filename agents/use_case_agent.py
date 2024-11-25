@@ -1,12 +1,14 @@
+# Load model directly
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import streamlit as st
 
-# Load model
+# Load Hugging Face model
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
 
 def generate_use_cases(industry_name, insights):
     """
-    Generate AI/GenAI use cases using a Hugging Face GPT-2 model and enforce proper formatting.
+    Generate AI/GenAI use cases using a Hugging Face model and ensure proper formatting.
     """
     # Create a structured prompt
     prompt = (
@@ -38,6 +40,22 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = raw_text.replace("\n", " ").strip()  # Clean up line breaks
+    formatted_text = raw_text.replace("\n", " ").replace("\r", "").strip()  # Remove newlines and extra spaces
     formatted_text = ' '.join(formatted_text.split())  # Normalize spaces
     return formatted_text
+
+# Streamlit App
+st.title("AI/GenAI Use Case Generator")
+
+# Input fields
+industry_name = st.text_input("Enter Industry Name", value="Healthcare")
+insights = st.text_area(
+    "Enter Industry Insights",
+    value="AI is transforming healthcare with trends like faster diagnostics, personalized treatments, and efficient resource management.",
+    height=200,
+)
+
+# Generate and display use cases
+if st.button("Generate Use Cases"):
+    use_cases = generate_use_cases(industry_name, insights)
+    st.text_area("Generated Use Cases", value=use_cases, height=400, wrap=True)
