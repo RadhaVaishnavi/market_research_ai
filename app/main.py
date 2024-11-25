@@ -3,6 +3,7 @@ import os
 
 print("Python Paths:", sys.path)  # Debugging: Check available paths
 print("Current Directory:", os.getcwd())  # Debugging: Check where the app runs from
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 
 import streamlit as st
