@@ -16,7 +16,7 @@ def generate_use_cases(industry_name, insights):
         "Use Case: [Title]\n"
         "AI Application: [Detailed description]\n"
         "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
-        "Please provide at least three distinct use cases."
+        "Please provide clear and concise responses without any extra spacing or formatting issues."
     )
 
     # Tokenize the prompt
@@ -38,8 +38,8 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = raw_text.replace("\n", "\n").strip()  # Retain line breaks for formatting
-    return formatted_text
+    formatted_text = ' '.join(raw_text.split())  # Remove extra spaces and line breaks
+    return formatted_text.strip()
 
 # Example usage
 use_cases = generate_use_cases("Healthcare", "AI can improve patient diagnosis and streamline administrative tasks.")
