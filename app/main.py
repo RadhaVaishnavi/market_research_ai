@@ -1,7 +1,7 @@
 import streamlit as st
-from agents.research_agent import fetch_industry_info, fetch_company_info
-from agents.use_case_agent import generate_use_cases
-from agents.resource_agent import collect_resources
+from agents/research_agent.py import fetch_industry_info, fetch_company_info
+from agents/use_case_agent import generate_use_cases
+from agents/resource_agent import collect_resources
 
 st.title("AI/GenAI Market Research & Use Case Generator")
 
