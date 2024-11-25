@@ -1,6 +1,6 @@
-# Load model directly
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
+# Load model
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
 
@@ -38,11 +38,6 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = raw_text.replace("\n\n", "\n").strip()  # Clean up excessive line breaks
-    formatted_text = ' '.join(formatted_text.split())  # Remove excessive spaces
+    formatted_text = raw_text.replace("\n", " ").strip()  # Clean up line breaks
+    formatted_text = ' '.join(formatted_text.split())  # Normalize spaces
     return formatted_text
-
-# Example usage with clear insights
-insights = "Five trends converging for AI-enabled healthcare: Why AI and technology are critical in improving patient outcomes."
-use_cases = generate_use_cases("healthcare", insights)
-print(use_cases)
