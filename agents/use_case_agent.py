@@ -29,5 +29,7 @@ def generate_use_cases(industry_name, insights):
     # Decode the generated tokens to text
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    # Clean up and return the result
-    return generated_text.strip()
+    # Remove unintended newlines and ensure proper formatting
+    cleaned_text = " ".join(generated_text.splitlines())  # Remove any extra newlines
+
+    return cleaned_text.strip()
