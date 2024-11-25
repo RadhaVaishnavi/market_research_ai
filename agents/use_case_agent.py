@@ -1,8 +1,8 @@
+# Load model directly
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Load a different tokenizer and model for better performance
-tokenizer = AutoTokenizer.from_pretrained("gpt2-medium")  # Using a larger model
-model = AutoModelForCausalLM.from_pretrained("gpt2-medium")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
 
 def generate_use_cases(industry_name, insights):
     """
