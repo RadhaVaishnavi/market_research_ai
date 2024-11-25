@@ -6,3 +6,4 @@ streamlit
 gradio
 langchain_community
 transformers
+torch
