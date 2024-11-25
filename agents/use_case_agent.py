@@ -16,6 +16,7 @@ def generate_use_cases(industry_name, insights):
         "Use Case: [Title]\n"
         "AI Application: [Detailed description]\n"
         "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
+        "Please provide at least three distinct use cases."
     )
 
     # Tokenize the prompt
@@ -24,7 +25,7 @@ def generate_use_cases(industry_name, insights):
     # Generate response
     outputs = model.generate(
         inputs["input_ids"],
-        max_length=300,
+        max_length=500,  # Increased length to accommodate multiple use cases
         num_return_sequences=1,
         no_repeat_ngram_size=2,
         do_sample=True,
@@ -37,5 +38,9 @@ def generate_use_cases(industry_name, insights):
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Post-process to ensure clean output
-    formatted_text = raw_text.replace("\n", " ").strip()  # Removes unintended line breaks
+    formatted_text = raw_text.replace("\n", "\n").strip()  # Retain line breaks for formatting
     return formatted_text
+
+# Example usage
+use_cases = generate_use_cases("Healthcare", "AI can improve patient diagnosis and streamline administrative tasks.")
+print(use_cases)
