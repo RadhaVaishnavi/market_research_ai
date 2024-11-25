@@ -11,15 +11,15 @@ def generate_use_cases(industry_name, insights):
     # Create a structured prompt
     prompt = (
         f"Generate structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
-        f"{insights}\n\n"
-        "Each use case should follow this format without any extra spaces:\n"
-        "Use Case: [Title]\n"
-        "AI Application: [Detailed description]\n"
-        "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
-        "Example:\n"
-        "Use Case: AI-Powered Predictive Maintenance\n"
-        "AI Application: Implement machine learning algorithms that analyze real-time sensor data from hospital equipment to predict potential failures and schedule maintenance proactively.\n"
-        "Cross-Functional Benefit: Operations: Minimizes unplanned downtime. Finance: Reduces maintenance costs.\n\n"
+        f"{insights}"
+        "Each use case should follow this format without any extra spaces:"
+        "Use Case: [Title]"
+        "AI Application: [Detailed description]"
+        "Cross-Functional Benefit: [List benefits across teams/functions]"
+        "Example:"
+        "Use Case: AI-Powered Predictive Maintenance"
+        "AI Application: Implement machine learning algorithms that analyze real-time sensor data from hospital equipment to predict potential failures and schedule maintenance proactively."
+        "Cross-Functional Benefit: Operations: Minimizes unplanned downtime. Finance: Reduces maintenance costs."
         "Please provide clear responses without any extra spacing or formatting issues."
     )
 
