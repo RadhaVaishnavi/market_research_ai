@@ -1,8 +1,12 @@
+import sys
+import os
+
+print("Python Paths:", sys.path)  # Debugging: Check available paths
+print("Current Directory:", os.getcwd())  # Debugging: Check where the app runs from
+
+
 import streamlit as st
 from agents.research_agent import fetch_industry_info, fetch_company_info
-from agents.use_case_agent import generate_use_cases
-from agents.resource_agent import collect_resources
-
 from agents.use_case_agent import generate_use_cases
 from agents.resource_agent import collect_resources
 
@@ -34,3 +38,9 @@ if st.button("Generate Insights"):
     resources = collect_resources(use_cases)
     for use_case, link in resources.items():
         st.write(f"{use_case}: [Dataset Link]({link})")
+
+
+
+
+
+
