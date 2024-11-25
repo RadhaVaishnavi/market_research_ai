@@ -16,7 +16,6 @@ def generate_use_cases(industry_name, insights):
         "Use Case: [Title]\n"
         "AI Application: [Detailed description]\n"
         "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
-        "Ensure the output is clean, detailed, and avoids bullet points or line-by-line formatting issues."
     )
 
     # Tokenize the prompt
@@ -34,18 +33,9 @@ def generate_use_cases(industry_name, insights):
         temperature=0.7
     )
 
-    # Decode and clean up the response
+    # Decode the model output
     raw_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    # Post-process to ensure correct formatting
-    formatted_text = ""
-    sections = raw_text.split("Use Case:")  # Split by expected section header
-    for section in sections:
-        if section.strip():  # Process non-empty sections
-            lines = section.strip().split("\n")
-            title = f"Use Case: {lines[0].strip()}" if lines else "Use Case: N/A"
-            ai_app = "AI Application: " + next((line.strip() for line in lines if "AI Application" in line), "N/A")
-            benefits = "Cross-Functional Benefit: " + next((line.strip() for line in lines if "Cross-Functional Benefit" in line), "N/A")
-            formatted_text += f"{title}\n{ai_app}\n{benefits}\n\n"
-
-    return formatted_text.strip()
+    # Post-process to ensure clean output
+    formatted_text = raw_text.replace("\n", " ").strip()  # Removes unintended line breaks
+    return formatted_text
