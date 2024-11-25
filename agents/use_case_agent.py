@@ -1,26 +1,33 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Load the model and tokenizer from Hugging Face (no need for OpenAI API key)
+# Load the tokenizer and model
 tokenizer = AutoTokenizer.from_pretrained("openai-community/gpt2")
 model = AutoModelForCausalLM.from_pretrained("openai-community/gpt2")
 
 def generate_use_cases(industry_name, insights):
     """
-    Generate AI/GenAI use cases using a language model (GPT-2 from Hugging Face).
-    industry_name: The name of the industry to tailor use cases for.
-    insights: Key insights or requirements about the industry or company.
+    Generate AI/GenAI use cases using a Hugging Face GPT-2 model.
     """
-    # Formulate the prompt based on the input industry and insights
+    # Create a prompt based on the inputs
     prompt = f"Generate AI/GenAI use cases for the {industry_name} industry based on the following insights: {insights}"
 
-    # Tokenize the input prompt
+    # Tokenize the prompt
     inputs = tokenizer(prompt, return_tensors="pt")
 
-    # Generate the output from the model
-    outputs = model.generate(inputs["input_ids"], max_length=150, num_return_sequences=1, do_sample=True, top_p=0.9, top_k=50)
+    # Generate a response
+    outputs = model.generate(
+        inputs["input_ids"],
+        max_length=200,
+        num_return_sequences=1,
+        no_repeat_ngram_size=2,  # Avoid repetition of phrases
+        do_sample=True,  # Use sampling to get diverse results
+        top_k=50,  # Consider the top 50 words at each step
+        top_p=0.9,  # Use nucleus sampling
+        temperature=0.7  # Control randomness
+    )
 
-    # Decode the output tokens to text
+    # Decode the generated tokens to text
     generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-    return generated_text.strip()  # Strip any leading/trailing whitespace
-
+    # Clean up and return the result
+    return generated_text.strip()
