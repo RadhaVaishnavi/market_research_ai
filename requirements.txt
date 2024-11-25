@@ -4,3 +4,4 @@ beautifulsoup4
 requests
 streamlit
 gradio
+langchain_community
