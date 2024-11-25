@@ -1,8 +1,8 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
-# Load the tokenizer and model
-tokenizer = AutoTokenizer.from_pretrained("openai-community/gpt2")
-model = AutoModelForCausalLM.from_pretrained("openai-community/gpt2")
+# Load a different tokenizer and model for better performance
+tokenizer = AutoTokenizer.from_pretrained("gpt2-medium")  # Using a larger model
+model = AutoModelForCausalLM.from_pretrained("gpt2-medium")
 
 def generate_use_cases(industry_name, insights):
     """
@@ -10,13 +10,13 @@ def generate_use_cases(industry_name, insights):
     """
     # Create a structured prompt
     prompt = (
-        f"Generate AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
+        f"Generate structured AI/GenAI use cases for the {industry_name} industry based on the following insights:\n"
         f"{insights}\n\n"
         "Each use case should follow this format:\n"
         "Use Case: [Title]\n"
         "AI Application: [Detailed description]\n"
         "Cross-Functional Benefit: [List benefits across teams/functions]\n\n"
-        "Ensure there are no extra spaces or formatting issues."
+        "Please ensure there are no extra spaces or formatting issues."
     )
 
     # Tokenize the prompt
@@ -43,6 +43,6 @@ def generate_use_cases(industry_name, insights):
     return formatted_text
 
 # Example usage with clear insights
-insights = "Five trends converging for AI-enabled healthcare: Why AI and..."
+insights = "Five trends converging for AI-enabled healthcare: Why AI and technology are critical in improving patient outcomes."
 use_cases = generate_use_cases("healthcare", insights)
 print(use_cases)
